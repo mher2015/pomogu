@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Помогу — Карта</title>
+
+<!-- Leaflet: бесплатная библиотека карт, без API-ключа -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  body { margin: 0; font-family: sans-serif; }
+  #map { height: 100vh; width: 100%; }
+  .popup-title { font-weight: bold; margin-bottom: 4px; }
+  .popup-role { color: #666; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<!-- Подключаем те же демо-данные, что и на сайте -->
+<script src="data.js"></script>
+
+<script>
+  // Центр карты — примерно центр Сюника
+  const map = L.map('map').setView([39.35, 46.4], 9);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+
+  // Разные иконки-эмодзи по роли, просто для наглядности
+  const roleEmoji = {
+    driver: "🚕",
+    guide: "🗺️",
+    restaurant: "🍽️"
+  };
+
+  USERS.forEach(user => {
+    const marker = L.marker([user.lat, user.lng]).addTo(map);
+    marker.bindPopup(`
+      <div class="popup-title">${roleEmoji[user.role] || "📍"} ${user.name}</div>
+      <div class="popup-role">${user.city} · ⭐ ${user.rating} (${user.reviews})</div>
+      <div>${user.description}</div>
+      <div>📞 ${user.phone}</div>
+    `);
+  });
+</script>
+
+</body>
+</html>
