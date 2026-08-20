@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Помогу — Такси, Туризм, Еда</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #202124;
+    }
+
+    .header {
+      background: #2563eb;
+      color: white;
+      padding: 35px 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0 0 10px;
+      font-size: 38px;
+    }
+
+    .header p {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .category {
+      border: none;
+      border-radius: 16px;
+      padding: 25px;
+      font-size: 22px;
+      font-weight: bold;
+      cursor: pointer;
+      background: white;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    }
+
+    .category:hover {
+      transform: scale(1.01);
+    }
+
+    .section {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .form {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    textarea {
+      min-height: 100px;
+    }
+
+    .submit {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      background: #16a34a;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .order {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 15px;
+      margin: 12px 0;
+    }
+
+    .price {
+      color: #16a34a;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .location {
+      color: #777;
+      margin-top: 6px;
+    }
+
+    .back {
+      background: #64748b;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 12px 18px;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 550px) {
+      .header h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <h1>Помогу</h1>
+    <p>Такси • Туризм • Еда</p>
+  </div>
+
+  <div class="container">
+
+    <div id="categories">
+
+      <h2>Выберите направление</h2>
+
+      <div class="categories">
+
+        <button class="category" onclick="openCategory('taxi')">
+          🚕 Такси
+        </button>
+
+        <button class="category" onclick="openCategory('tourism')">
+          🗺️ Туризм
+        </button>
+
+        <button class="category" onclick="openCategory('food')">
+          🍽️ Еда
+        </button>
+
+      </div>
+
+    </div>
+
+    <div id="taxi" class="section hidden">
+
+      <button class="back" onclick="goBack()">← Назад</button>
+
+      <h2>🚕 Такси</h2>
+
+      <p>Заказать поездку или найти водителя.</p>
+
+      <div class="form">
+        <label>Откуда</label>
+        <input id="taxiFrom" placeholder="Например: Горис">
+
+        <label>Куда</label>
+        <input id="taxiTo" placeholder="Например: Ереван">
+
+        <label>Цена, ֏</label>
+        <input id="taxiPrice" type="number" placeholder="Например: 10000">
+
+        <button class="submit" onclick="createTaxiOrder()">
+          Заказать такси
+        </button>
+      </div>
+
+      <h3>Доступные поездки</h3>
+
+      <div id="taxiOrders">
+        <div class="order">
+          <strong>🚕 Горис → Ереван</strong>
+          <div class="price">Договорная</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="tourism" class="section hidden">
+
+      <button class="back" onclick="goBack()">← Назад</button>
+
+      <h2>🗺️ Туризм</h2>
+
+      <p>Гиды, экскурсии, гостиницы и туристические услуги.</p>
+
+      <div class="form">
+
+        <label>Что вы хотите найти?</label>
+
+        <textarea id="tourismDescription"
+          placeholder="Например: экскурсия по Горису с гидом"></textarea>
+
+        <label>Город / место</label>
+
+        <input id="tourismLocation"
+          placeholder="Например: Горис">
+
+        <button class="submit" onclick="createTourismOrder()">
+          Найти туристическую услугу
+        </button>
+
+      </div>
+
+      <h3>Популярные услуги</h3>
+
+      <div class="order">
+        <strong>🏔️ Экскурсия по Горису</strong>
+        <div class="price">От 15 000 ֏</div>
+        <div class="location">📍 Горис</div>
+      </div>
+
+      <div class="order">
+        <strong>🏨 Гостиницы</strong>
+        <div class="location">📍 Сюник</div>
+      </div>
+
+    </div>
+
+    <div id="food" class="section hidden">
+
+      <button class="back" onclick="goBack()">← Назад</button>
+
+      <h2>🍽️ Еда</h2>
+
+      <p>Рестораны, кафе и места, где вкусно поесть.</p>
+
+      <div class="form">
+
+        <label>Что вы хотите найти?</label>
+
+        <input id="foodDescription"
+          placeholder="Например: ресторан с армянской кухней">
+
+        <label>Город</label>
+
+        <input id="foodLocation"
+          placeholder="Например: Горис">
+
+        <button class="submit" onclick="findFood()">
+          Найти еду
+        </button>
+
+      </div>
+
+      <h3>Популярные места</h3>
+
+      <div class="order">
+        <strong>🍴 Ресторан армянской кухни</strong>
+        <div class="location">📍 Горис</div>
+      </div>
+
+      <div class="order">
+        <strong>☕ Кафе</strong>
+        <div class="location">📍 Горис</div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    function openCategory(category) {
+
+      document.getElementById("categories").classList.add("hidden");
+
+      document.getElementById("taxi").classList.add("hidden");
+      document.getElementById("tourism").classList.add("hidden");
+      document.getElementById("food").classList.add("hidden");
+
+      document.getElementById(category).classList.remove("hidden");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function goBack() {
+
+      document.getElementById("taxi").classList.add("hidden");
+      document.getElementById("tourism").classList.add("hidden");
+      document.getElementById("food").classList.add("hidden");
+
+      document.getElementById("categories").classList.remove("hidden");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+    function createTaxiOrder() {
+
+      const from = document.getElementById("taxiFrom").value;
+      const to = document.getElementById("taxiTo").value;
+      const price = document.getElementById("taxiPrice").value;
+
+      if (!from || !to) {
+        alert("Введите откуда и куда.");
+        return;
+      }
+
+      const order = document.createElement("div");
+
+      order.className = "order";
+
+      order.innerHTML = `
+        <strong>🚕 ${from} → ${to}</strong>
+        <div class="price">
+          ${price ? Number(price).toLocaleString() + " ֏" : "Договорная"}
+        </div>
+      `;
+
+      document.getElementById("taxiOrders").appendChild(order);
+
+      document.getElementById("taxiFrom").value = "";
+      document.getElementById("taxiTo").value = "";
+      document.getElementById("taxiPrice").value = "";
+
+      alert("Заказ такси создан!");
+    }
+
+    function createTourismOrder() {
+
+      const description =
+        document.getElementById("tourismDescription").value;
+
+      const location =
+        document.getElementById("tourismLocation").value;
+
+      if (!description || !location) {
+        alert("Заполните описание и место.");
+        return;
+      }
+
+      alert("Запрос на туристическую услугу создан!");
+
+      document.getElementById("tourismDescription").value = "";
+      document.getElementById("tourismLocation").value = "";
+    }
+
+    function findFood() {
+
+      const description =
+        document.getElementById("foodDescription").value;
+
+      const location =
+        document.getElementById("foodLocation").value;
+
+      if (!description || !location) {
+        alert("Заполните, что вы хотите найти, и город.");
+        return;
+      }
+
+      alert("Поиск еды запущен!");
+
+      document.getElementById("foodDescription").value = "";
+      document.getElementById("foodLocation").value = "";
+    }
+
+  </script>
+
+</body>
+</html>
